@@ -7,7 +7,7 @@ class Router{
 	private:
 		int routerID;
 		int buffer;
-		vector<pair<Router, int> > connections;
+		vector<pair<Router*, int> > connections;
 		double transmissionDelay;
 		double propagationSpeed;
 		double processingDelay;
@@ -19,7 +19,7 @@ class Router{
 		Router();
 		Router(int id, int buffSize, double transmissionDly, double propagationDly, double processingDly, double band, double loss);
 		~Router();
-		void addConnection(Router newConnection, int length);
+		void addConnection(Router* newConnection, int length);
 		int getID();
 		
 };

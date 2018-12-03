@@ -26,7 +26,7 @@ Router::Router(int id, int buffSize, double transmissionDly, double propagationD
 }
 
 void Router::addConnection(Router* newConnection, int length){
-	pair<Router, int> tempConnection;
+	pair<Router*, int> tempConnection;
 	tempConnection.first = newConnection;
 	tempConnection.second = length;
 	connections.push_back(tempConnection);
