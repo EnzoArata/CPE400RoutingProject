@@ -1,4 +1,6 @@
 #include "Router.h"
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -14,6 +16,8 @@ int main(void){
 	double distanceDelay = 0;
 	double totalDelay = 0; 
 	int packetLosses = 0;
+	vector<vector<double> > connectionDistances;
+	string input;
 
 	int numNetworks = 16;
 	vector<Router*> networkMesh;
@@ -68,6 +72,41 @@ int main(void){
 	networkMesh[14].addConnection(networkMesh[13], 9);
 	networkMesh[14].addConnection(networkMesh[15], 15);
 	networkMesh[15].addConnection(networkMesh[13], 8);
+
+
+	for (int i = 0; i < 16; i++)
+	{
+		int totalConnections = networkMesh.connections.size();
+		connectionDistances.push_back(std::vector<double>());
+		for (int j = 0; j < totalConnections; j++)
+		{
+			distanceDelay = networkMesh[i].connections[j].second;//networkMesh[i].travelTime(networkMesh[i].connections[j].first);  //Calculates the distance between router i and its connections
+			connectionDistances[i].push_back(distanceDelay);
+		}
+	}
+
+	std::cout << "In order to simulate the routing algorithm,we have created a mesh network" << std::endl;
+	std::cout << "The network is configured exactly like the example given in the project ideas PDF" << std::endl;
+	std::cout << "The network has a total of 16 nodes, with different physical links." << std::endl;
+	std::cout << "By defualt the routers all have the same information" << std::endl;
+	std::cout << "Would you like to change defualt settings for the routers? y/n: ";
+
+	cin >> input;
+
+	if(!input=="n")
+	{
+		std::cout << "Enter packet size: ";
+		std::cin >> packetSize;
+		std::cout << "Enter bandwidth: ";
+		std::cin >> bandwidth;
+		std::cout << "Enter packet loss chance ";
+		std::cin >> randomPacketLoss;
+		std::cout << "Enter time to process a request";
+		std::cin >> processingDelay;
+		std::cout << "Enter buffer size for routers ";
+		std::cin >> bufferSize;
+		input = "";
+	}
 
 	return 0;
 

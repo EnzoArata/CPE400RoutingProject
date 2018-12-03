@@ -32,5 +32,11 @@ void Router::addConnection(Router* newConnection, int length){
 	connections.push_back(tempConnection);
 }
 
+double Router::travelTime(Router destination, int physicalLink)
+{
+	double propagationDelay = (physicalLink) / propagationSpeed;
+	return (propagationDelay + transmissionDelay);
+}
+
 
 
