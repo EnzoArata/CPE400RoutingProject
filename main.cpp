@@ -1,9 +1,8 @@
-#include <vector.h>
 #include "Router.h"
 
 using namespace std;
 
-void main(void){
+int main(void){
 
 	int packetSize = 512;
 	int bufferSize = 10; 
@@ -16,20 +15,20 @@ void main(void){
 	double totalDelay = 0; 
 	int packetLosses = 0;
 
-	numNetworks = 16;
+	int numNetworks = 16;
 	vector<Router*> networkMesh;
 	for (int i; i < numNetworks; i++){
 		Router* tempRouter = new Router(i //routerID
-										bufferSize //buffers
-										transmissionDelay //transmission Delay
-										propigationDelay //propigation Delay
-										processingDelay //processing Delay
-										bandwidth //bandwidth
-										packetLoss //loss Chance
-										)
+						bufferSize //buffers
+						transmissionDelay //transmission Delay
+						propigationDelay //propigation Delay
+						processingDelay //processing Delay
+						bandwidth //bandwidth
+						packetLoss //loss Chance
+						)
 		networkMesh.Push_Back(tempRouter);
 	}
-	[]
+	
 	networkMesh[0].addConnection(networkMesh[1], 1);
 	networkMesh[1].addConnection(networkMesh[0], 1);
 	networkMesh[1].addConnection(networkMesh[2], 2);
@@ -69,5 +68,7 @@ void main(void){
 	networkMesh[14].addConnection(networkMesh[13], 9);
 	networkMesh[14].addConnection(networkMesh[15], 15);
 	networkMesh[15].addConnection(networkMesh[13], 8);
+
+	return 0;
 
 }	
