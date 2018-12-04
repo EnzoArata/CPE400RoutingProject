@@ -1,4 +1,5 @@
 #include "Router.h"
+#include <iostream>
 
 Router::Router(){
 	routerID = -1;
@@ -26,17 +27,23 @@ Router::Router(int id, int buffSize, double transmissionDly, double propagationD
 }
 
 void Router::addConnection(Router* newConnection, int length){
-	pair<Router, int> tempConnection;
+	/*pair<Router*, int> tempConnection;
 	tempConnection.first = newConnection;
 	tempConnection.second = length;
-	connections.push_back(tempConnection);
+	connections.push_back(tempConnection);*/
+	
+	connections.push_back(std::make_pair(newConnection, length));
+}
+int Router::getID()
+{
+	return routerID;
 }
 
-double Router::travelTime(Router destination, int physicalLink)
+/*double Router::travelTime(Router destination, int physicalLink)
 {
 	double propagationDelay = (physicalLink) / propagationSpeed;
 	return (propagationDelay + transmissionDelay);
-}
+}*/
 
 
 
