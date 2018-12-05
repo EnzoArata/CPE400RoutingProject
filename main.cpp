@@ -28,6 +28,7 @@ int main(void){
 	double propigationDelay = 0;//.05; 
 	double distanceDelay = 0;
 	double totalDelay = 0; 
+	double randomPacketLoss = 0.05;
 	int packetLosses = 0;
 	int source;
 	
@@ -105,7 +106,25 @@ int main(void){
 	cout << "The network is configured exactly like the example given in the project ideas PDF" << endl;
 	cout << "The network has a total of 16 nodes, with different physical links." << endl;
 	cout << "By defualt the routers all have the same information" << endl;
-	//std::cout << "Would you like to change defualt settings for the routers? y/n: ";
+	cout << "Would you like to change defualt settings for the routers? y/n: " << endl;
+	cin >> input;
+
+	
+	if(input!="n")
+	{
+		
+		cout << "Enter packet size: ";
+		cin >> packetSize;
+		cout << "Enter bandwidth: ";
+		cin >> bandwidth;
+		cout << "Enter packet loss chance ";
+		cin >> randomPacketLoss;
+		cout << "Enter time to process a request";
+		cin >> processingDelay;
+		cout << "Enter buffer size for routers ";
+		cin >> bufferSize;
+		input = "";
+	}
 	cout << "Enter a source router: " << endl;
 	cin >> source;
 	cout << "Enter a destination router: " << endl;
@@ -123,24 +142,6 @@ int main(void){
 		nodePath.push_back(previousRouter);
 	}
 	printPath(nodePath);
-
-
-	if(input!="n")
-	{
-		
-		/*std::cout << "Enter packet size: ";
-		std::cin >> packetSize;
-		std::cout << "Enter bandwidth: ";
-		std::cin >> bandwidth;
-		std::cout << "Enter packet loss chance ";
-		std::cin >> randomPacketLoss;
-		std::cout << "Enter time to process a request";
-		std::cin >> processingDelay;
-		std::cout << "Enter buffer size for routers ";
-		std::cin >> bufferSize;
-		input = "";*/
-	}
-
 	return 0;
 
 }	
@@ -200,12 +201,13 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
 void printPath(vector<int> nodePath)
 {
 	cout << "The packets starts at Router " << nodePath[nodePath.size()-2] << endl;
+
 	for(int i=nodePath.size()-3; i>=0 ;i--)
 	{
 		cout << "The packets is then sent to Router " << nodePath[i] << endl;
 		
 	}
-	cout << "The packets is then sent to Router " << destination << ", the packet has now reached the destination" << endl;
+	cout << "The packets is then sent to Router " << destination << endl << "The packet has now reached the destination" << endl;
 	/*for(int j=0;j<nodePath.size();j++)
 	{
 		cout << nodePath[j] << endl;
