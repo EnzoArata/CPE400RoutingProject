@@ -5,10 +5,10 @@ Router::Router(){
 	routerID = -1;
 	buffer = 0;
 	transmissionDelay = 0;
-	propagationSpeed = 0;
-	processingDelay = 0;
-	bandwidth = 0;
-	lossChance = 0;
+	propagationSpeed = 200000000000;
+	processingDelay = INT_MAX;
+	bandwidth = 1500000;
+	lossChance = 1;
 	isFull = false;
 	abilityToRoute = false;
 
@@ -39,11 +39,17 @@ int Router::getID()
 	return routerID;
 }
 
-/*double Router::travelTime(Router destination, int physicalLink)
+double Router::travelTime(Router* destination)
 {
-	double propagationDelay = (physicalLink) / propagationSpeed;
-	return (propagationDelay + transmissionDelay);
-}*/
+	for (int i=0; i<connections.size();i++){
+		if (connections[i].first == destination){
+				double propagationDelay = (connections[i].second) / propagationSpeed;
+				return (propagationDelay + transmissionDelay);
+		}
+	}
+	std::cout << "unable to find path to specified router" << std::endl;
+	return 0;
+}
 
 
 

@@ -1,4 +1,5 @@
 #include <vector>
+#include <climits>
 
 using namespace std;
 
@@ -20,7 +21,7 @@ class Router{
 		~Router();
 		void addConnection(Router* newConnection, int length);
 		int getID();
-		//double travelTime(Router destination);
+		double travelTime(Router* destination);
 
 		vector<pair<Router*, int> > connections;
 		

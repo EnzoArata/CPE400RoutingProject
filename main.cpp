@@ -124,7 +124,17 @@ int main(void){
 	}
 	printPath(nodePath);
 
+	Router* parent;
+	Router* child;
 
+	for (int i; i<jumpCount-1; i++){
+		parent = networkMesh[nodePath[i]];
+		child = networkMesh[nodePath[i+1]];
+		finalTime += parent->travelTime(child);
+
+	}
+	cout << finalTime << endl;
+	//travelTime(Router destination)
 	if(input!="n")
 	{
 		
