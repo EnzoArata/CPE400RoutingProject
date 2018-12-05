@@ -13,6 +13,7 @@ vector<Router*> networkMesh;
 
 
 vector<pair <int, int> > shortestPath(int, int, vector<vector<pair<int, int> >>);
+void printPath(vector<int> nodePath);
 
 int main(void){
 
@@ -111,14 +112,17 @@ int main(void){
 	vector<pair <int, int> > pathInfo = shortestPath(source, destination, connectionDistances);
 	int jumpCount = 0;
 	int previousRouter = pathInfo[destination].second;
+	vector <int> nodePath;
+	nodePath.push_back(previousRouter);
 	while (previousRouter!=-1)
 	{
 		jumpCount++;
-		cout << previousRouter << " ";
+		
 		previousRouter =pathInfo[previousRouter].second;
+		nodePath.push_back(previousRouter);
 	}
-	
-	cout << endl ;
+	printPath(nodePath);
+
 
 	if(input!="n")
 	{
@@ -190,4 +194,9 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
     
 
 	return min_distance;
+}
+
+void printPath(vector<int> nodePath)
+{
+
 }
