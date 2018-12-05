@@ -24,8 +24,8 @@ int main(void){
 	double bandwidth = 1500000;  //network bandwidth
 	double packetLoss = .05;  //loss chance for a packet over the network
 	double processingDelay = .05; 
-	double transmissionDelay = 0;//.05; 
-	double propigationDelay = 0;//.05; 
+	double transmissionDelay = 0.05; 
+	double propigationDelay = 0.05; 
 	double distanceDelay = 0;
 	double totalDelay = 0; 
 	double randomPacketLoss = 0.05;
@@ -130,12 +130,14 @@ int main(void){
 	cout << "Enter a destination router: " << endl;
 	cin >> destination;
 
-	
+
 	vector<pair <int, int> > pathInfo = shortestPath(source, destination, connectionDistances);
 	int jumpCount = 0;
 	int previousRouter = pathInfo[destination].second;
 	vector <int> nodePath;
+	nodePath.push_back(destination);
 	nodePath.push_back(previousRouter);
+	
 	while (previousRouter!=-1)
 	{
 		jumpCount++;
@@ -147,11 +149,14 @@ int main(void){
 
 	Router* parent;
 	Router* child;
-
-	for (int i; i<jumpCount-1; i++){
+	double time;
+	for (int i=0; i<nodePath.size()-1; i++){
+		cout << nodePath[i] << " to " << nodePath[i+1] << endl; 
 		parent = networkMesh[nodePath[i]];
 		child = networkMesh[nodePath[i+1]];
-		finalTime += parent->travelTime(child);
+		time = parent->travelTime(child);
+		cout << time << endl;
+		finalTime += time;
 
 	}
 	cout << finalTime << endl;
@@ -221,7 +226,7 @@ void printPath(vector<int> nodePath)
 		cout << "The packets is then sent to Router " << nodePath[i] << endl;
 		
 	}
-	cout << "The packets is then sent to Router " << destination << endl << "The packet has now reached the destination" << endl;
+	cout << "The packet has now reached the destination" << endl;
 	/*for(int j=0;j<nodePath.size();j++)
 	{
 		cout << nodePath[j] << endl;
