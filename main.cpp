@@ -9,6 +9,7 @@
 using namespace std;
 int finalTime = 0;
 vector<Router*> networkMesh;
+int destination;
 
 
 
@@ -29,7 +30,7 @@ int main(void){
 	double totalDelay = 0; 
 	int packetLosses = 0;
 	int source;
-	int destination;
+	
 	vector<vector<pair<int, int>> > connectionDistances;
 	string input;
 
@@ -170,7 +171,7 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
         {
         	for(int i=0;i<min_distance.size();i++)
         	{
-        		 cout << "distance to " << i << ": "<<min_distance[i].first << " previous node " << min_distance[i].second << endl;
+        		 //cout << "distance to " << i << ": "<<min_distance[i].first << " previous node " << min_distance[i].second << endl;
         	}
         	
        		return min_distance; 	
@@ -198,5 +199,15 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
 
 void printPath(vector<int> nodePath)
 {
-
+	cout << "The packets starts at Router " << nodePath[nodePath.size()-2] << endl;
+	for(int i=nodePath.size()-3; i>=0 ;i--)
+	{
+		cout << "The packets is then sent to Router " << nodePath[i] << endl;
+		
+	}
+	cout << "The packets is then sent to Router " << destination << ", the packet has now reached the destination" << endl;
+	/*for(int j=0;j<nodePath.size();j++)
+	{
+		cout << nodePath[j] << endl;
+	}*/
 }
