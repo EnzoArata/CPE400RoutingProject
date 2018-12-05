@@ -21,7 +21,7 @@ class Router{
 		~Router();
 		void addConnection(Router* newConnection, int length);
 		int getID();
-		double travelTime(Router* destination);
+		double travelTime(Router* destination, int packetSize);
 
 		vector<pair<Router*, int> > connections;
 		

@@ -7,7 +7,7 @@
 
 
 using namespace std;
-int finalTime = 0;
+double finalTime = 0;
 vector<Router*> networkMesh;
 int destination;
 
@@ -21,11 +21,11 @@ int main(void){
 	int packetSize = 512;
 	int bufferSize = 10; 
 	
-	double bandwidth = 1500000;  //network bandwidth
+	double bandwidth = 1000;  //network bandwidth
 	double packetLoss = .05;  //loss chance for a packet over the network
 	double processingDelay = .05; 
 	double transmissionDelay = 0.05; 
-	double propigationDelay = 0.05; 
+	double propigationDelay = 1; 
 	double distanceDelay = 0;
 	double totalDelay = 0; 
 	double randomPacketLoss = 0.05;
@@ -150,16 +150,16 @@ int main(void){
 	Router* parent;
 	Router* child;
 	double time;
-	for (int i=0; i<nodePath.size()-1; i++){
-		cout << nodePath[i] << " to " << nodePath[i+1] << endl; 
+	for (int i=0; i<nodePath.size()-2; i++){
+		
 		parent = networkMesh[nodePath[i]];
 		child = networkMesh[nodePath[i+1]];
-		time = parent->travelTime(child);
-		cout << time << endl;
+		time = child->travelTime(parent,packetSize);
+		
 		finalTime += time;
 
 	}
-	cout << finalTime << endl;
+	cout << "The total travel time took: " << finalTime << " Milliseconds" << endl;
 
 	return 0;
 

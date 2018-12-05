@@ -39,11 +39,12 @@ int Router::getID()
 	return routerID;
 }
 
-double Router::travelTime(Router* destination)
+double Router::travelTime(Router* destination, int packetSize)
 {
 	for (int i=0; i<connections.size();i++){
 		if (connections[i].first == destination){
-				double propagationDelay = (connections[i].second) / propagationSpeed;
+				double propagationDelay = packetSize / bandwidth + (connections[i].second) / propagationSpeed;
+				
 				return (propagationDelay + transmissionDelay);
 		}
 	}
