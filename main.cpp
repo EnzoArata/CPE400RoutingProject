@@ -54,7 +54,7 @@ int main(void){
 		cin >> numPackets;
 		std::cout << "Enter packet size: ";
 		cin >> packetSize;
-		std::cout << "Enter packet loss chance ";
+		std::cout << "Enter packet loss chance: ";
 		cin >> packetLoss;
 	}
 
@@ -67,16 +67,16 @@ int main(void){
 
 		std::cout << "Enter bandwidth: ";
 		cin >> bandwidth;
-		std::cout << "Enter time to process a request";
+		std::cout << "Enter time to process a request: ";
 		cin >> processingDelay;
-		std::cout << "Enter buffer size for routers ";
+		std::cout << "Enter buffer size for routers: ";
 		cin >> bufferSize;
 		input = "";
 	}
 
-	std::cout << "Enter a source router: " << std::endl;
+	std::cout << "Enter a source router: ";
 	cin >> source;
-	std::cout << "Enter a destination router: " << std::endl;
+	std::cout << "Enter a destination router: ";
 	cin >> destination;
 
 	for (int i=0; i < numNetworks; i++){
