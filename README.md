@@ -3,4 +3,4 @@
  
 ### BUILD INSTRUCTIONS
 run make in the project directory
-./Routing to run project
+run ./Routing to run project
