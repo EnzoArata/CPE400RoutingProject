@@ -3,10 +3,12 @@
 #include <fstream>
 #include <climits>
 #include <set>
+#include <time.h> 
+#include <stdio.h> 
 
 
 
-using namespace std;
+
 double finalTime = 0;
 vector<Router*> networkMesh;
 int destination;
@@ -28,8 +30,8 @@ int main(void){
 	double propigationDelay = 1; 
 	double distanceDelay = 0;
 	double totalDelay = 0; 
-	double randomPacketLoss = 0.05;
 	int packetLosses = 0;
+	int numPackets = 1;
 	int source;
 	
 	vector<vector<pair<int, int>> > connectionDistances;
@@ -37,6 +39,45 @@ int main(void){
 
 
 	int numNetworks = 16;
+
+	std::cout << "In order to simulate the routing algorithm,we have created a mesh network" << std::endl;
+	std::cout << "The network is configured exactly like the example given in the project ideas PDF" << std::endl;
+	std::cout << "The network has a total of 16 nodes, with different physical links." << std::endl;
+	std::cout << "By defualt the routers all have the same information" << std::endl;
+
+	std::cout << "Would you like to change defualt settings for the packet? y/n: ";
+	cin >> input;
+
+	if(input!="n")
+	{
+		std::cout << "Enter number of packet: ";
+		cin >> numPackets;
+		std::cout << "Enter packet size: ";
+		cin >> packetSize;
+		std::cout << "Enter packet loss chance ";
+		cin >> packetLoss;
+	}
+
+	std::cout << "Would you like to change defualt settings for the routers? y/n: ";
+	cin >> input;
+
+	
+	if(input!="n")
+	{
+
+		std::cout << "Enter bandwidth: ";
+		cin >> bandwidth;
+		std::cout << "Enter time to process a request";
+		cin >> processingDelay;
+		std::cout << "Enter buffer size for routers ";
+		cin >> bufferSize;
+		input = "";
+	}
+
+	std::cout << "Enter a source router: " << std::endl;
+	cin >> source;
+	std::cout << "Enter a destination router: " << std::endl;
+	cin >> destination;
 
 	for (int i=0; i < numNetworks; i++){
 		Router* tempRouter = new Router(i, //routerID
@@ -55,40 +96,40 @@ int main(void){
 	networkMesh[1]->addConnection(networkMesh[0], 1);
 	networkMesh[1]->addConnection(networkMesh[2], 2);
 	networkMesh[1]->addConnection(networkMesh[4], 4);
-	networkMesh[2]->addConnection(networkMesh[1], 1);
+	networkMesh[2]->addConnection(networkMesh[1], 2);
 	networkMesh[2]->addConnection(networkMesh[3], 3);
 	networkMesh[2]->addConnection(networkMesh[5], 3);
-	networkMesh[3]->addConnection(networkMesh[2], 2);
-	networkMesh[4]->addConnection(networkMesh[1], 1);
+	networkMesh[3]->addConnection(networkMesh[2], 3);
+	networkMesh[4]->addConnection(networkMesh[1], 4);
 	networkMesh[4]->addConnection(networkMesh[5], 3);
 	networkMesh[4]->addConnection(networkMesh[6], 5);
-	networkMesh[5]->addConnection(networkMesh[2], 4);
-	networkMesh[5]->addConnection(networkMesh[4], 10);
+	networkMesh[5]->addConnection(networkMesh[2], 3);
+	networkMesh[5]->addConnection(networkMesh[4], 3);
 	networkMesh[5]->addConnection(networkMesh[7], 10);
 	networkMesh[5]->addConnection(networkMesh[8], 11);
-	networkMesh[6]->addConnection(networkMesh[4], 9);
-	networkMesh[7]->addConnection(networkMesh[5], 8);
+	networkMesh[6]->addConnection(networkMesh[4], 5);
+	networkMesh[7]->addConnection(networkMesh[5], 10);
 	networkMesh[7]->addConnection(networkMesh[9], 9);
-	networkMesh[8]->addConnection(networkMesh[5], 7);
+	networkMesh[8]->addConnection(networkMesh[5], 11);
 	networkMesh[8]->addConnection(networkMesh[9], 9);
 	networkMesh[8]->addConnection(networkMesh[10], 15);
 	networkMesh[9]->addConnection(networkMesh[7], 6);
 	networkMesh[9]->addConnection(networkMesh[8], 7);
-	networkMesh[10]->addConnection(networkMesh[8], 5);
+	networkMesh[10]->addConnection(networkMesh[8], 15);
 	networkMesh[10]->addConnection(networkMesh[11], 6);
-	networkMesh[11]->addConnection(networkMesh[10], 5);
+	networkMesh[11]->addConnection(networkMesh[10], 6);
 	networkMesh[11]->addConnection(networkMesh[12], 12);
 	networkMesh[11]->addConnection(networkMesh[13], 12);
-	networkMesh[12]->addConnection(networkMesh[11], 4);
+	networkMesh[12]->addConnection(networkMesh[11], 12);
 	networkMesh[12]->addConnection(networkMesh[13], 11);
-	networkMesh[12]->addConnection(networkMesh[14], 11);
-	networkMesh[13]->addConnection(networkMesh[11], 3);
-	networkMesh[13]->addConnection(networkMesh[12], 3);
+	networkMesh[12]->addConnection(networkMesh[14], 3);
+	networkMesh[13]->addConnection(networkMesh[11], 12);
+	networkMesh[13]->addConnection(networkMesh[12], 11);
 	networkMesh[13]->addConnection(networkMesh[14], 3);
 	networkMesh[13]->addConnection(networkMesh[15], 3);
-	networkMesh[14]->addConnection(networkMesh[12], 6);
-	networkMesh[14]->addConnection(networkMesh[13], 9);
-	networkMesh[15]->addConnection(networkMesh[13], 8);
+	networkMesh[14]->addConnection(networkMesh[12], 11);
+	networkMesh[14]->addConnection(networkMesh[13], 3);
+	networkMesh[15]->addConnection(networkMesh[13], 3);
 
 
 	for (int i = 0; i < 16; i++)
@@ -102,33 +143,9 @@ int main(void){
 		}
 	}
 
-	cout << "In order to simulate the routing algorithm,we have created a mesh network" << endl;
-	cout << "The network is configured exactly like the example given in the project ideas PDF" << endl;
-	cout << "The network has a total of 16 nodes, with different physical links." << endl;
-	cout << "By defualt the routers all have the same information" << endl;
-	cout << "Would you like to change defualt settings for the routers? y/n: " << endl;
-	cin >> input;
 
-	
-	if(input!="n")
-	{
-		
-		cout << "Enter packet size: ";
-		cin >> packetSize;
-		cout << "Enter bandwidth: ";
-		cin >> bandwidth;
-		cout << "Enter packet loss chance ";
-		cin >> randomPacketLoss;
-		cout << "Enter time to process a request";
-		cin >> processingDelay;
-		cout << "Enter buffer size for routers ";
-		cin >> bufferSize;
-		input = "";
-	}
-	cout << "Enter a source router: " << endl;
-	cin >> source;
-	cout << "Enter a destination router: " << endl;
-	cin >> destination;
+
+
 
 
 	vector<pair <int, int> > pathInfo = shortestPath(source, destination, connectionDistances);
@@ -149,17 +166,45 @@ int main(void){
 
 	Router* parent;
 	Router* child;
-	double time;
-	for (int i=0; i<nodePath.size()-2; i++){
-		
+	double timePassed;
+	bool lost = false;
+	int randmax = 100;
+	int randChance;
+	srand(time(NULL));
+	int droppedRouter =0;
+
+	for (int i=nodePath.size()-2; i>0; i--){
+
+
+		randChance = (rand() % 101 );
+
+		if (randChance <packetLoss*100){
+			if (numPackets>1){
+				droppedRouter = nodePath[i-1];
+			} else {
+				droppedRouter = nodePath[rand() % (nodePath.size()-2)];
+			}
+			std::cout << "packet lost on route to router " << droppedRouter << " resending another packet" << std::endl;
+			lost = true;
+		}
+
 		parent = networkMesh[nodePath[i]];
-		child = networkMesh[nodePath[i+1]];
-		time = child->travelTime(parent,packetSize);
+		child = networkMesh[nodePath[i-1]];
+		timePassed = parent->travelTime(child,packetSize);
+		if (lost){
+			i++;
+			packetLosses++;
+			lost = false;
+		} else if (numPackets>1) {
+			numPackets--;
+			i++;
+		}
 		
-		finalTime += time;
+		finalTime += timePassed;
 
 	}
-	cout << "The total travel time took: " << finalTime << " Milliseconds" << endl;
+	std::cout << "The total travel time took: " << finalTime << " Milliseconds" << std::endl;
+	std::cout << "The packet was lost " << packetLosses << " times." << std::endl;
 
 	return 0;
 
@@ -191,7 +236,7 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
         {
         	for(int i=0;i<min_distance.size();i++)
         	{
-        		 //cout << "distance to " << i << ": "<<min_distance[i].first << " previous node " << min_distance[i].second << endl;
+        		 //std::cout << "distance to " << i << ": "<<min_distance[i].first << " previous node " << min_distance[i].second << std::endl;
         	}
         	
        		return min_distance; 	
@@ -219,16 +264,16 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
 
 void printPath(vector<int> nodePath)
 {
-	cout << "The packets starts at Router " << nodePath[nodePath.size()-2] << endl;
+	std::cout << "The packets starts at Router " << nodePath[nodePath.size()-2] << std::endl;
 
 	for(int i=nodePath.size()-3; i>=0 ;i--)
 	{
-		cout << "The packets is then sent to Router " << nodePath[i] << endl;
+		std::cout << "The packets is then sent to Router " << nodePath[i] << std::endl;
 		
 	}
-	cout << "The packet has now reached the destination" << endl;
+	std::cout << "The packet has now reached the destination" << std::endl;
 	/*for(int j=0;j<nodePath.size();j++)
 	{
-		cout << nodePath[j] << endl;
+		std::cout << nodePath[j] << std::endl;
 	}*/
 }

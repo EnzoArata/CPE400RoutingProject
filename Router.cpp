@@ -1,6 +1,7 @@
 #include "Router.h"
 #include <iostream>
 
+
 Router::Router(){
 	routerID = -1;
 	buffer = 0;
@@ -41,6 +42,8 @@ int Router::getID()
 
 double Router::travelTime(Router* destination, int packetSize)
 {
+	
+
 	for (int i=0; i<connections.size();i++){
 		if (connections[i].first == destination){
 				double propagationDelay = packetSize / bandwidth + (connections[i].second) / propagationSpeed;
