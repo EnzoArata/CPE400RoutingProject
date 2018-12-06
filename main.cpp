@@ -179,12 +179,13 @@ int main(void){
 		randChance = (rand() % 101 );
 
 		if (randChance <packetLoss*100){
-			if (numPackets>1){
-				droppedRouter = nodePath[i-1];
+			if (numPackets=1){
+				droppedRouter = i;
 			} else {
-				droppedRouter = nodePath[rand() % (nodePath.size()-2)];
+				droppedRouter = rand() % (nodePath.size()-2);
 			}
-			std::cout << "packet lost on route to router " << droppedRouter << " resending another packet" << std::endl;
+			std::cout << "!Packet lost occured on link from router " << nodePath[droppedRouter] << " to router "<< nodePath[droppedRouter-1] << "!" << std::endl;
+			std::cout <<"\tResending another packet" << std::endl;
 			lost = true;
 		}
 
@@ -222,7 +223,6 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
 {
 	set<pair<int, int> > finalRoute;
 	int cursor = 0;
-	//int dijkstra(const vector< vector<edge> > &graph, int source, int dest) {
 	vector<pair <int, int> >min_distance;
 	for (int i =0; i<connections.size(); i++){
 		min_distance.push_back(make_pair(INT_MAX, -1));
@@ -234,30 +234,20 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
         int where = finalRoute.begin()->second;
         if (where == dest)
         {
-        	for(int i=0;i<min_distance.size();i++)
-        	{
-        		 //std::cout << "distance to " << i << ": "<<min_distance[i].first << " previous node " << min_distance[i].second << std::endl;
-        	}
-        	
        		return min_distance; 	
         } 
         finalRoute.erase( finalRoute.begin() );
         for (auto ed : connections[where]) 
         {
-        	
             if (min_distance[ed.first].first > min_distance[where].first + ed.second) {
             	
                 finalRoute.erase( { min_distance[ed.first].first, ed.first } );
                 min_distance[ed.first].first = min_distance[where].first + ed.second;
                 min_distance[ed.first].second = where;
-                
                 finalRoute.insert( { min_distance[ed.first].first, ed.first } );
             }
         }
-
     }
- 
-    
 
 	return min_distance;
 }
