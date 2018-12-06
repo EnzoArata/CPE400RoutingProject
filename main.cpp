@@ -47,7 +47,7 @@ int main(void){
 
 	std::cout << "Would you like to change defualt settings for the packet? y/n: ";
 	cin >> input;
-
+	//Input for packet settings
 	if(input!="n")
 	{
 		std::cout << "Enter number of packet: ";
@@ -61,7 +61,7 @@ int main(void){
 	std::cout << "Would you like to change defualt settings for the routers? y/n: ";
 	cin >> input;
 
-	
+	//Input for router settings
 	if(input!="n")
 	{
 
@@ -73,12 +73,12 @@ int main(void){
 		cin >> bufferSize;
 		input = "";
 	}
-
+	//Input for source and destination router
 	std::cout << "Enter a source router: ";
 	cin >> source;
 	std::cout << "Enter a destination router: ";
 	cin >> destination;
-
+	//Creation of routers
 	for (int i=0; i < numNetworks; i++){
 		Router* tempRouter = new Router(i, //routerID
 						bufferSize, //buffers
@@ -91,7 +91,7 @@ int main(void){
 		networkMesh.push_back(tempRouter);
 	}
 
-	
+	//Creating network mesh
 	networkMesh[0]->addConnection(networkMesh[1], 1);
 	networkMesh[1]->addConnection(networkMesh[0], 1);
 	networkMesh[1]->addConnection(networkMesh[2], 2);
@@ -131,7 +131,7 @@ int main(void){
 	networkMesh[14]->addConnection(networkMesh[13], 3);
 	networkMesh[15]->addConnection(networkMesh[13], 3);
 
-
+	//Creating data to contain all connections between routers
 	for (int i = 0; i < 16; i++)
 	{
 		int totalConnections = networkMesh[i]->connections.size();
@@ -154,7 +154,7 @@ int main(void){
 	vector <int> nodePath;
 	nodePath.push_back(destination);
 	nodePath.push_back(previousRouter);
-	
+	//Creating shortest path from data returned from shortestPath function
 	while (previousRouter!=-1)
 	{
 		jumpCount++;
@@ -162,6 +162,7 @@ int main(void){
 		previousRouter =pathInfo[previousRouter].second;
 		nodePath.push_back(previousRouter);
 	}
+	//Calls on function to print path of nodes between source and destination router
 	printPath(nodePath);
 
 	Router* parent;
@@ -172,12 +173,11 @@ int main(void){
 	int randChance;
 	srand(time(NULL));
 	int droppedRouter =0;
-
+	//Calculating total time for packets to send
 	for (int i=nodePath.size()-2; i>0; i--){
-
-
+		
 		randChance = (rand() % 101 );
-
+		//Calculating chance for a packet to be lost
 		if (randChance <packetLoss*100){
 			if (numPackets=1){
 				droppedRouter = i;
@@ -191,16 +191,18 @@ int main(void){
 
 		parent = networkMesh[nodePath[i]];
 		child = networkMesh[nodePath[i-1]];
+		//Calculating time for packet to travel between two nodes
 		timePassed = parent->travelTime(child,packetSize);
 		if (lost){
 			i++;
 			packetLosses++;
 			lost = false;
 		} else if (numPackets>1) {
+			//Allows for multiple packets to be sent
 			numPackets--;
 			i++;
 		}
-		
+		//adding current travel time to final time
 		finalTime += timePassed;
 
 	}
@@ -210,7 +212,7 @@ int main(void){
 	return 0;
 
 }	
-
+//Data set for a node, used in shortest path function
 struct Node{
 	double dist;
 	bool vis;
@@ -218,7 +220,9 @@ struct Node{
     	dist(d), vis(v)
   	{}
 };
-
+//Function to determine shortest path between source and destination router
+//Used modified djikstras algorithm to determine most optimal route
+//Returns a vector pair which returns distance to get to new node and the node it left from
 vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair<int, int> > >connections)
 {
 	set<pair<int, int> > finalRoute;
@@ -229,7 +233,8 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
 	}
     min_distance[ startID ].first = 0;
     finalRoute.insert( {0,startID} );
-     
+    
+    //Comparing travel times between routes
     while (!finalRoute.empty()) {
         int where = finalRoute.begin()->second;
         if (where == dest)
@@ -239,6 +244,7 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
         finalRoute.erase( finalRoute.begin() );
         for (auto ed : connections[where]) 
         {
+	    //Triggers if it finds a more optimal path
             if (min_distance[ed.first].first > min_distance[where].first + ed.second) {
             	
                 finalRoute.erase( { min_distance[ed.first].first, ed.first } );
@@ -251,7 +257,7 @@ vector<pair <int, int> > shortestPath(int startID, int dest, vector< vector<pair
 
 	return min_distance;
 }
-
+//Prints out node path between source and destination router
 void printPath(vector<int> nodePath)
 {
 	std::cout << "The packets starts at Router " << nodePath[nodePath.size()-2] << std::endl;
