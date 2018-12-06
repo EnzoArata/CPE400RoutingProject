@@ -1,7 +1,7 @@
 #include "Router.h"
 #include <iostream>
 
-
+//default Constructor for uninitialized routers
 Router::Router(){
 	routerID = -1;
 	buffer = 0;
@@ -15,7 +15,7 @@ Router::Router(){
 
 }
 
-
+//paramterized constructor for set up routers
 Router::Router(int id, int buffSize, double transmissionDly, double propagationDly, double processingDly, double band, double loss){
 
 	routerID = id;
@@ -26,7 +26,7 @@ Router::Router(int id, int buffSize, double transmissionDly, double propagationD
 	bandwidth = band;
 	lossChance = loss;
 }
-
+//Function to add router connections, including physical links
 void Router::addConnection(Router* newConnection, int length){
 	/*pair<Router*, int> tempConnection;
 	tempConnection.first = newConnection;
@@ -35,11 +35,12 @@ void Router::addConnection(Router* newConnection, int length){
 	
 	connections.push_back(std::make_pair(newConnection, length));
 }
+//Returns id of router
 int Router::getID()
 {
 	return routerID;
 }
-
+//Calculates travel time along a path between routers
 double Router::travelTime(Router* destination, int packetSize)
 {
 	
